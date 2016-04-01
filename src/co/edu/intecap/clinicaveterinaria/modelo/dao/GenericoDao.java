@@ -10,6 +10,7 @@ import java.util.List;
 /**
  *
  * @author Lord_Nightmare
+ * @param <T> tipo de clase del generics de la implementacion de la interface
  */
 public interface GenericoDao<T> {
     

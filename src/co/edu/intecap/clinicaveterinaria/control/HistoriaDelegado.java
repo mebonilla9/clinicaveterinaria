@@ -5,60 +5,61 @@
  */
 package co.edu.intecap.clinicaveterinaria.control;
 
-import co.edu.intecap.clinicaveterinaria.modelo.dao.ClienteDao;
-import co.edu.intecap.clinicaveterinaria.modelo.vo.ClienteVo;
+import co.edu.intecap.clinicaveterinaria.modelo.dao.HistoriaDao;
+import co.edu.intecap.clinicaveterinaria.modelo.vo.HistoriaVo;
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 
 /**
  *
  * @author Lord_Nightmare
  */
-public class ClienteDelegado {
+public class HistoriaDelegado {
+    
+    private final JPanel contenedor;
+    private final HistoriaDao historiaDao;
 
-    private final JFrame contenedor;
-    private final ClienteDao clienteDao;
-
-    public ClienteDelegado(JFrame contenedor) {
+    public HistoriaDelegado(JPanel contenedor) {
         this.contenedor = contenedor;
-        this.clienteDao = new ClienteDao();
+        this.historiaDao = new HistoriaDao();
     }
-
-    public void registrarCliente(ClienteVo cliente) {
+    
+    public void registrarMedico(HistoriaVo historia) {
         try {
-            this.clienteDao.insertar(cliente);
+            this.historiaDao.insertar(historia);
         } catch (Exception e) {
             JOptionPane.showMessageDialog(contenedor, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
-    public void editarCliente(ClienteVo cliente) {
+    public void editarMedico(HistoriaVo historia) {
         try {
-            this.clienteDao.editar(cliente);
+            this.historiaDao.editar(historia);
         } catch (Exception e) {
             JOptionPane.showMessageDialog(contenedor, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
-    public List<ClienteVo> consultarClientes() {
-        List<ClienteVo> listaClientes = new ArrayList<>();
+    public List<HistoriaVo> consultarMedicos() {
+        List<HistoriaVo> listaHistorias = new ArrayList<>();
         try {
-            listaClientes = this.clienteDao.consultar();
+            listaHistorias = this.historiaDao.consultar();
         } catch (Exception e) {
             JOptionPane.showMessageDialog(contenedor, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
-        return listaClientes;
+        return listaHistorias;
     }
 
-    public ClienteVo consultarCliente(int idCliente) {
-        ClienteVo cliente = new ClienteVo();
+    public HistoriaVo consultarMedico(int id) {
+        HistoriaVo historia = new HistoriaVo();
         try {
-            cliente = this.clienteDao.consultar(idCliente);
+            historia = this.historiaDao.consultar(id);
         } catch (Exception e) {
             JOptionPane.showMessageDialog(contenedor, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
-        return cliente;
+        return historia;
     }
+    
 }

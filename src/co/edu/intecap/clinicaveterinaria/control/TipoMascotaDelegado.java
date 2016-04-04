@@ -5,60 +5,60 @@
  */
 package co.edu.intecap.clinicaveterinaria.control;
 
-import co.edu.intecap.clinicaveterinaria.modelo.dao.ClienteDao;
-import co.edu.intecap.clinicaveterinaria.modelo.vo.ClienteVo;
+import co.edu.intecap.clinicaveterinaria.modelo.dao.TipoMascotaDao;
+import co.edu.intecap.clinicaveterinaria.modelo.vo.TipoMascotaVo;
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 
 /**
  *
  * @author Lord_Nightmare
  */
-public class ClienteDelegado {
+public class TipoMascotaDelegado {
 
-    private final JFrame contenedor;
-    private final ClienteDao clienteDao;
+    private final JPanel contenedor;
+    private final TipoMascotaDao tipoMascotaDao;
 
-    public ClienteDelegado(JFrame contenedor) {
+    public TipoMascotaDelegado(JPanel contenedor) {
         this.contenedor = contenedor;
-        this.clienteDao = new ClienteDao();
+        this.tipoMascotaDao = new TipoMascotaDao();
     }
 
-    public void registrarCliente(ClienteVo cliente) {
+    public void registrarMedico(TipoMascotaVo tipoMascota) {
         try {
-            this.clienteDao.insertar(cliente);
+            this.tipoMascotaDao.insertar(tipoMascota);
         } catch (Exception e) {
             JOptionPane.showMessageDialog(contenedor, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
-    public void editarCliente(ClienteVo cliente) {
+    public void editarMedico(TipoMascotaVo tipoMascota) {
         try {
-            this.clienteDao.editar(cliente);
+            this.tipoMascotaDao.editar(tipoMascota);
         } catch (Exception e) {
             JOptionPane.showMessageDialog(contenedor, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
-    public List<ClienteVo> consultarClientes() {
-        List<ClienteVo> listaClientes = new ArrayList<>();
+    public List<TipoMascotaVo> consultarMedicos() {
+        List<TipoMascotaVo> listaMedicos = new ArrayList<>();
         try {
-            listaClientes = this.clienteDao.consultar();
+            listaMedicos = this.tipoMascotaDao.consultar();
         } catch (Exception e) {
             JOptionPane.showMessageDialog(contenedor, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
-        return listaClientes;
+        return listaMedicos;
     }
 
-    public ClienteVo consultarCliente(int idCliente) {
-        ClienteVo cliente = new ClienteVo();
+    public TipoMascotaVo consultarMedico(int id) {
+        TipoMascotaVo tipoMascota = new TipoMascotaVo();
         try {
-            cliente = this.clienteDao.consultar(idCliente);
+            tipoMascota = this.tipoMascotaDao.consultar(id);
         } catch (Exception e) {
             JOptionPane.showMessageDialog(contenedor, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
-        return cliente;
+        return tipoMascota;
     }
 }

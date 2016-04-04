@@ -5,6 +5,8 @@
  */
 package co.edu.intecap.clinicaveterinaria;
 
+import co.edu.intecap.clinicaveterinaria.vista.Ventana;
+
 /**
  *
  * @author Lord_Nightmare
@@ -15,7 +17,7 @@ public class Principal {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        
+        new Ventana().setVisible(true);
     }
     
 }

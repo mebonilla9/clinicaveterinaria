@@ -26,7 +26,7 @@ public class HistoriaDelegado {
         this.historiaDao = new HistoriaDao();
     }
     
-    public void registrarMedico(HistoriaVo historia) {
+    public void registrarHistoria(HistoriaVo historia) {
         try {
             this.historiaDao.insertar(historia);
         } catch (Exception e) {
@@ -34,7 +34,7 @@ public class HistoriaDelegado {
         }
     }
 
-    public void editarMedico(HistoriaVo historia) {
+    public void editarHistoria(HistoriaVo historia) {
         try {
             this.historiaDao.editar(historia);
         } catch (Exception e) {
@@ -42,7 +42,7 @@ public class HistoriaDelegado {
         }
     }
 
-    public List<HistoriaVo> consultarMedicos() {
+    public List<HistoriaVo> consultarHistorias() {
         List<HistoriaVo> listaHistorias = new ArrayList<>();
         try {
             listaHistorias = this.historiaDao.consultar();
@@ -52,10 +52,20 @@ public class HistoriaDelegado {
         return listaHistorias;
     }
 
-    public HistoriaVo consultarMedico(int id) {
+    public HistoriaVo consultarHistoria(int id) {
         HistoriaVo historia = new HistoriaVo();
         try {
             historia = this.historiaDao.consultar(id);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(contenedor, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+        return historia;
+    }
+    
+    public HistoriaVo consultarHistoriaMascota(int idMascota){
+        HistoriaVo historia = new HistoriaVo();
+        try {
+            historia = this.historiaDao.consultarPorIdMascota(idMascota);
         } catch (Exception e) {
             JOptionPane.showMessageDialog(contenedor, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }

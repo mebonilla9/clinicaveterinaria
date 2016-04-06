@@ -5,17 +5,94 @@
  */
 package co.edu.intecap.clinicaveterinaria.vista.paneles;
 
+import co.edu.intecap.clinicaveterinaria.control.TipoMascotaDelegado;
+import co.edu.intecap.clinicaveterinaria.modelo.vo.TipoMascotaVo;
+import java.util.List;
+import javax.swing.JOptionPane;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author Lord_Nightmare
  */
 public class TipoMascotaPanel extends javax.swing.JPanel {
 
+    private DefaultTableModel modelo;
+    private final TipoMascotaVo tipoMascotaVo;
+
     /**
      * Creates new form ClientePanel
      */
     public TipoMascotaPanel() {
         initComponents();
+        configurarTabla();
+        llenarTabla(new TipoMascotaDelegado(this).consultarTipoMascotas(), modelo);
+        this.tipoMascotaVo = new TipoMascotaVo();
+    }
+
+    /**
+     * metodo para obtener valores del GUI y registrar un nuevo tipo de mascota
+     */
+    private void registrarTipoMascota() {
+        // asignar nombre del tipo de mascota
+        tipoMascotaVo.setNombre(txtNombre.getText());
+        tipoMascotaVo.setEstado(cbxEstado.isSelected());
+        new TipoMascotaDelegado(this).registrarTipoMascota(tipoMascotaVo);
+        // mensaje de confirmacion de registro
+        JOptionPane.showMessageDialog(
+                this,
+                "Tipo de mascota Registrado",
+                "Registro de datos",
+                JOptionPane.INFORMATION_MESSAGE
+        );
+        refrescarTabla();
+        limpiarCampos();
+    }
+
+    /**
+     * Permite establecer los parametros iniciales de una tabla
+     */
+    private void configurarTabla() {
+        modelo = new DefaultTableModel();
+        modelo.addColumn("Id Mascota");
+        modelo.addColumn("Nombre");
+        modelo.addColumn("estado");
+        tblTipoMascota.setModel(modelo);
+        tblTipoMascota.getSelectionModel().addListSelectionListener(tableListener);
+    }
+
+    /**
+     * Carga una lista de tipos de mascota desde la base de datos 
+     * a la tabla de la intefaz grafica de usuario
+     * @param listaTipoMascota lista de tipos de mascota de la base de datos
+     * @param modelo Modelo de tabla con la estructura de los datos a cargar
+     */
+    private void llenarTabla(List<TipoMascotaVo> listaTipoMascota, DefaultTableModel modelo) {
+        for (TipoMascotaVo tipoMascotaVo : listaTipoMascota) {
+            Object[] fila = new Object[3];
+            fila[0] = tipoMascotaVo.getIdTipoMascota();
+            fila[1] = tipoMascotaVo.getNombre();
+            fila[2] = tipoMascotaVo.isEstado();
+            modelo.addRow(fila);
+        }
+        tblTipoMascota.updateUI();
+    }
+    
+    /**
+     * Actualiza la informacion de la tabla con cada vez que se realiza
+     * un registro
+     */
+    private void refrescarTabla(){
+        modelo.setRowCount(0);
+        List<TipoMascotaVo> listaMascotas = new TipoMascotaDelegado(this).consultarTipoMascotas();
+        llenarTabla(listaMascotas, modelo);
+    }
+    
+    private void limpiarCampos(){
+        txtNombre.setText("");
+        cbxEstado.setSelected(false);
     }
 
     /**
@@ -28,21 +105,21 @@ public class TipoMascotaPanel extends javax.swing.JPanel {
     private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jCheckBox1 = new javax.swing.JCheckBox();
+        txtNombre = new javax.swing.JTextField();
+        cbxEstado = new javax.swing.JCheckBox();
         jLabel4 = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
-        jButton1 = new javax.swing.JButton();
+        tblTipoMascota = new javax.swing.JTable();
+        btnGuardar = new javax.swing.JButton();
 
         jLabel1.setText("Nombre:");
 
-        jCheckBox1.setText("Activo");
+        cbxEstado.setText("Activo");
 
         jLabel4.setText("Estado:");
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tblTipoMascota.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -53,9 +130,14 @@ public class TipoMascotaPanel extends javax.swing.JPanel {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(tblTipoMascota);
 
-        jButton1.setText("Guardar");
+        btnGuardar.setText("Guardar");
+        btnGuardar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGuardarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -71,13 +153,13 @@ public class TipoMascotaPanel extends javax.swing.JPanel {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(layout.createSequentialGroup()
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(189, 189, 189))
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(5, 5, 5)
-                                .addComponent(jCheckBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(cbxEstado, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jButton1))))
+                                .addComponent(btnGuardar))))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                         .addContainerGap())
@@ -89,12 +171,12 @@ public class TipoMascotaPanel extends javax.swing.JPanel {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jCheckBox1)
+                    .addComponent(cbxEstado)
                     .addComponent(jLabel4)
-                    .addComponent(jButton1))
+                    .addComponent(btnGuardar))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -103,15 +185,43 @@ public class TipoMascotaPanel extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
+        this.registrarTipoMascota();
+    }//GEN-LAST:event_btnGuardarActionPerformed
+
+    ListSelectionListener tableListener = new ListSelectionListener() {
+        @Override
+        public void valueChanged(ListSelectionEvent e) {
+            if (tblTipoMascota.getSelectedRow() > -1) {
+                // se obtiene el id de la fila seleccionada en la tabla
+                int id = (int) tblTipoMascota.getValueAt(tblTipoMascota.getSelectedRow(), 0);
+                System.out.println(id);
+                // consultar en la base de datos por ese id seleccionado y guardar el 
+                // resultado de la consulta en un nuevo objet de TipoMascotaVo
+                TipoMascotaVo tMvo = new TipoMascotaDelegado(TipoMascotaPanel.this).consultarTipoMascota(id);
+                // asignar los valores obtenidos de la consulta a la constante
+                tipoMascotaVo.setIdTipoMascota(tMvo.getIdTipoMascota());
+                tipoMascotaVo.setNombre(tMvo.getNombre());
+                tipoMascotaVo.setEstado(tMvo.isEstado());
+                // llenar campos del formulario
+                llenarCampos();
+            }
+        }
+    };
+    
+    private void llenarCampos(){
+        txtNombre.setText(tipoMascotaVo.getNombre());
+        cbxEstado.setSelected(tipoMascotaVo.isEstado());
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JCheckBox jCheckBox1;
+    private javax.swing.JButton btnGuardar;
+    private javax.swing.JCheckBox cbxEstado;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTextField jTextField1;
+    private javax.swing.JTable tblTipoMascota;
+    private javax.swing.JTextField txtNombre;
     // End of variables declaration//GEN-END:variables
 }

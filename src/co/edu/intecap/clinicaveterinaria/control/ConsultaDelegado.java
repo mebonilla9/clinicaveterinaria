@@ -26,23 +26,23 @@ public class ConsultaDelegado {
         this.consultaDao = new ConsultaDao();
     }
     
-    public void registrarMedico(ConsultaVo medico) {
+    public void registrarConsulta(ConsultaVo consulta) {
         try {
-            this.consultaDao.insertar(medico);
+            this.consultaDao.insertar(consulta);
         } catch (Exception e) {
             JOptionPane.showMessageDialog(contenedor, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
-    public void editarMedico(ConsultaVo medico) {
+    public void editarConsulta(ConsultaVo consulta) {
         try {
-            this.consultaDao.editar(medico);
+            this.consultaDao.editar(consulta);
         } catch (Exception e) {
             JOptionPane.showMessageDialog(contenedor, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
-    public List<ConsultaVo> consultarMedicos() {
+    public List<ConsultaVo> consultarConsultas() {
         List<ConsultaVo> listaConsultas = new ArrayList<>();
         try {
             listaConsultas = this.consultaDao.consultar();
@@ -52,7 +52,7 @@ public class ConsultaDelegado {
         return listaConsultas;
     }
 
-    public ConsultaVo consultarMedico(int id) {
+    public ConsultaVo consultarConsulta(int id) {
         ConsultaVo consulta = new ConsultaVo();
         try {
             consulta = this.consultaDao.consultar(id);

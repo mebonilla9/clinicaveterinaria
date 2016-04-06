@@ -7,9 +7,6 @@ package co.edu.intecap.clinicaveterinaria.modelo.conexion;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -23,9 +20,9 @@ public class Conexion {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             cnn = DriverManager.getConnection(
-                    "jdbc:mysql://169.254.43.21:3306/veterinaria",
+                    "jdbc:mysql://127.0.0.1:3306/veterinaria",
                     "root",
-                    ""
+                    "1234"
             );
         } catch (Exception e) {
             e.printStackTrace(System.err);

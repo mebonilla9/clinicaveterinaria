@@ -80,7 +80,7 @@ public class MedicoDao extends Conexion implements GenericoDao<MedicoVo>{
             ResultSet rs = sentencia.executeQuery();
             while (rs.next()) {
                 MedicoVo medico = new MedicoVo();
-                medico.setIdMedico(rs.getInt("id_tipo_mascota"));
+                medico.setIdMedico(rs.getInt("id_medico"));
                 medico.setNombre(rs.getString("nombre"));
                 medico.setCorreo(rs.getString("correo"));
                 medico.setDocumento(rs.getString("documento"));

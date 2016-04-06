@@ -17,8 +17,8 @@ import java.util.List;
  *
  * @author Lord_Nightmare
  */
-public class HistoriaDao extends Conexion implements GenericoDao<HistoriaVo>{
-    
+public class HistoriaDao extends Conexion implements GenericoDao<HistoriaVo> {
+
     @Override
     public void insertar(HistoriaVo object) {
         PreparedStatement sentencia;
@@ -73,7 +73,7 @@ public class HistoriaDao extends Conexion implements GenericoDao<HistoriaVo>{
         List<HistoriaVo> lista = new ArrayList<>();
         try {
             conectar();
-            String sql = "select * from cliente";
+            String sql = "select * from historia";
             sentencia = cnn.prepareStatement(sql);
             ResultSet rs = sentencia.executeQuery();
             while (rs.next()) {
@@ -99,11 +99,11 @@ public class HistoriaDao extends Conexion implements GenericoDao<HistoriaVo>{
         HistoriaVo obj = null;
         try {
             conectar();
-            String sql = "select * from cliente where id_historia = ?";
+            String sql = "select * from historia where id_historia = ?";
             sentencia = cnn.prepareStatement(sql);
             sentencia.setInt(1, id);
             ResultSet rs = sentencia.executeQuery();
-            while (rs.next()) {
+            if (rs.next()) {
                 obj = new HistoriaVo();
                 obj.setIdHistoria(rs.getInt("id_historia"));
                 obj.setFechaApertura(rs.getDate("fecha_apertura"));
@@ -118,5 +118,30 @@ public class HistoriaDao extends Conexion implements GenericoDao<HistoriaVo>{
         }
         return obj;
     }
-    
+
+    public HistoriaVo consultarPorIdMascota(int idMascota) {
+        PreparedStatement sentencia;
+        HistoriaVo obj = null;
+        try {
+            conectar();
+            String sql = "select * from historia where id_mascota = ? order by fecha_apertura desc limit 1";
+            sentencia = cnn.prepareStatement(sql);
+            sentencia.setInt(1, idMascota);
+            ResultSet rs = sentencia.executeQuery();
+            if (rs.next()) {
+                obj = new HistoriaVo();
+                obj.setIdHistoria(rs.getInt("id_historia"));
+                obj.setFechaApertura(rs.getDate("fecha_apertura"));
+                obj.setFechaApertura(rs.getDate("fecha_cierre"));
+                obj.setEstado(rs.getBoolean("estado"));
+                obj.setIdMascota(rs.getInt("id_mascota"));
+            }
+        } catch (Exception e) {
+            e.printStackTrace(System.err);
+        } finally {
+            desconectar();
+        }
+        return obj;
+    }
+
 }

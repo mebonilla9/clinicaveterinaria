@@ -25,7 +25,7 @@ public class ConsultaDao extends Conexion implements GenericoDao<ConsultaVo>{
         try {
             conectar();
             // crear consulta de insersion
-            String sql = "insert into consulta(fecha,motivo,descripcion,tarjeta_profesional,estado) values(?,?,?,?,?)";
+            String sql = "insert into consulta(fecha,motivo,descripcion,estado,id_medico,id_historia) values(?,?,?,?,?,?)";
             sentencia = cnn.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS);
             // asignar parametros a la insersion
             sentencia.setDate(1, object.getFecha());
@@ -33,7 +33,7 @@ public class ConsultaDao extends Conexion implements GenericoDao<ConsultaVo>{
             sentencia.setString(3, object.getDescripcion());
             sentencia.setString(4, object.getEstado());
             sentencia.setInt(5, object.getIdMedico());
-            sentencia.setInt(5, object.getIdHistoria());
+            sentencia.setInt(6, object.getIdHistoria());
             // ejecutar la insersion
             sentencia.executeUpdate();
             // obtener la llave de registro de la mascota
@@ -77,7 +77,7 @@ public class ConsultaDao extends Conexion implements GenericoDao<ConsultaVo>{
         List<ConsultaVo> lista = new ArrayList<>();
         try {
             conectar();
-            String sql = "select * from medico";
+            String sql = "select * from consulta";
             sentencia = cnn.prepareStatement(sql);
             ResultSet rs = sentencia.executeQuery();
             while (rs.next()) {
@@ -105,7 +105,7 @@ public class ConsultaDao extends Conexion implements GenericoDao<ConsultaVo>{
         ConsultaVo obj = null;
         try {
             conectar();
-            String sql = "select * from medico where id_medico = ?";
+            String sql = "select * from consulta where id_consulta = ?";
             sentencia = cnn.prepareStatement(sql);
             sentencia.setInt(1, id);
             ResultSet rs = sentencia.executeQuery();

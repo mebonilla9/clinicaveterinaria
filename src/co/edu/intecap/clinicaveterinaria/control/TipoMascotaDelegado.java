@@ -26,7 +26,7 @@ public class TipoMascotaDelegado {
         this.tipoMascotaDao = new TipoMascotaDao();
     }
 
-    public void registrarMedico(TipoMascotaVo tipoMascota) {
+    public void registrarTipoMascota(TipoMascotaVo tipoMascota) {
         try {
             this.tipoMascotaDao.insertar(tipoMascota);
         } catch (Exception e) {
@@ -34,7 +34,7 @@ public class TipoMascotaDelegado {
         }
     }
 
-    public void editarMedico(TipoMascotaVo tipoMascota) {
+    public void editarTipoMascota(TipoMascotaVo tipoMascota) {
         try {
             this.tipoMascotaDao.editar(tipoMascota);
         } catch (Exception e) {
@@ -42,7 +42,7 @@ public class TipoMascotaDelegado {
         }
     }
 
-    public List<TipoMascotaVo> consultarMedicos() {
+    public List<TipoMascotaVo> consultarTipoMascotas() {
         List<TipoMascotaVo> listaMedicos = new ArrayList<>();
         try {
             listaMedicos = this.tipoMascotaDao.consultar();
@@ -52,7 +52,7 @@ public class TipoMascotaDelegado {
         return listaMedicos;
     }
 
-    public TipoMascotaVo consultarMedico(int id) {
+    public TipoMascotaVo consultarTipoMascota(int id) {
         TipoMascotaVo tipoMascota = new TipoMascotaVo();
         try {
             tipoMascota = this.tipoMascotaDao.consultar(id);
